@@ -3,9 +3,11 @@ import { Layout, Menu } from "antd"
 import { useAppSelector } from "../hooks/reduxHooks";
 import { Link } from "react-router-dom";
 import { PublicRoutesEnum } from "../utils/routes/types";
+import { useAction } from "../hooks/useAction";
 
 const Navbar: FC = () => {
-    const { user, isAuth } = useAppSelector(state => state.auth)
+    const { user, isAuth } = useAppSelector(state => state.auth);
+    const { logOut } = useAction();
 
     return (
         <Layout.Header>
@@ -15,9 +17,10 @@ const Navbar: FC = () => {
                     <Menu
                         theme="dark"
                         mode="horizontal"
+                        selectable={false}
                     >
                         <div>{user?.username}</div>
-                        <Menu.Item key={"exit"}>Выйти</Menu.Item>
+                        <Menu.Item key={"exit"} onClick={logOut}>Выйти</Menu.Item>
                     </Menu>
                     :
                     <Menu

@@ -1,0 +1,26 @@
+.root {
+  height: 100%;
+}
+
+.todos {
+  padding-top: 30px;
+  margin-top: 20px;
+  height: 100%;
+  background-color: #fff;
+}
+
+.linksList {
+  margin-left: 3px;
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.link {
+  margin-right: 14px;
+}
+
+.active {
+  color: #6633FF;
+}

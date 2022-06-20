@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cl from "../LoginForm/LoginForm.module.scss";
 import { Button, Form, Input, Row } from "antd";
 import { rules } from "../../utils/inputRules";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { PublicRoutesEnum } from "../../utils/routes/types";
+import { UserAPI } from "../../redux/API/userAPI";
+import { useAction } from "../../hooks/useAction";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 const RegistrationForm = () => {
+    const { registration, setError } = useAction();
+    const { error, isLoading } = useAppSelector(state => state.auth)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
+    const submit = async () => {
+        const { data } = await UserAPI.getUsersByUsername(username);
+        if (data.length === 0) {
+            registration({ username, password })
+        } else {
+            setError("Пользователь с таким именем уже существует")
+        }
+    }
 
     return (
         <div className={cl.root}>
@@ -15,19 +31,22 @@ const RegistrationForm = () => {
                 className={cl.form}
                 name="normal_login"
                 initialValues={{ remember: true }}
-                // onFinish={() => submit()}
+                onFinish={() => submit()}
             >
-                {/*{error &&*/}
-                {/*    <div className={cl.errorMessage}>Не правильный логин или пароль</div>*/}
-                {/*}*/}
+                {error &&
+                    <div className={cl.errorMessage}>{error}</div>
+                }
 
                 <Form.Item
                     name="username"
                     rules={[rules.required()]}
                 >
                     <Input
-                        // value={username}
-                        // onChange={e => setUsername(e.target.value)}
+                        value={username}
+                        onChange={e => {
+                            setError("")
+                            setUsername(e.target.value);
+                        }}
                         prefix={<UserOutlined className="site-form-item-icon"/>}
                         placeholder="Имя пользователя"
                     />
@@ -35,11 +54,11 @@ const RegistrationForm = () => {
 
                 <Form.Item
                     name="password"
-                    rules={[rules.required()]}
+                    rules={[rules.required(), rules.equalInputs("Пароли не совпадают", confirmPassword)]}
                 >
                     <Input
-                        // value={password}
-                        // onChange={e => serPassword(e.target.value)}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                         type="password"
                         placeholder="Пароль"
                     />
@@ -47,11 +66,11 @@ const RegistrationForm = () => {
 
                 <Form.Item
                     name="confirmPassword"
-                    rules={[rules.required()]}
+                    rules={[rules.required(), rules.equalInputs("Пароли не совпадают", password)]}
                 >
                     <Input
-                        // value={password}
-                        // onChange={e => serPassword(e.target.value)}
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
                         type="password"
                         placeholder="Повторите пароль"
                     />
@@ -60,7 +79,7 @@ const RegistrationForm = () => {
                 <Form.Item>
                     <Row justify={"space-between"}>
                         <Button
-                            // loading={isLoading}
+                            loading={isLoading}
                             type="primary"
                             htmlType="submit"
                             className="login-form-button"

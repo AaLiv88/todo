@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './scss/index.scss';
 import AppRouter from "./components/AppRouter";
 import 'antd/dist/antd.css';
+import { useAction } from "./hooks/useAction";
+import { LocalStorageKeysEnum } from "./utils/LocalStorageKeysEnum";
+import { IUser } from "./modules/IUser";
 
 function App() {
+    const { setUser } = useAction()
+
+    useEffect(() => {
+        if (localStorage.getItem(LocalStorageKeysEnum.USERNAME)) {
+            setUser({
+                username: localStorage.getItem(LocalStorageKeysEnum.USERNAME)
+            } as IUser);
+        }
+    }, []);
+
     return (
         <AppRouter/>
     );
