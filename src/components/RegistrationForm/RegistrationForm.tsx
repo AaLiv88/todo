@@ -8,6 +8,7 @@ import { PublicRoutesEnum } from "../../utils/routes/types";
 import { UserAPI } from "../../redux/API/userAPI";
 import { useAction } from "../../hooks/useAction";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 
 const RegistrationForm = () => {
     const { registration, setError } = useAction();
@@ -19,7 +20,11 @@ const RegistrationForm = () => {
     const submit = async () => {
         const { data } = await UserAPI.getUsersByUsername(username);
         if (data.length === 0) {
-            registration({ username, password })
+            registration({
+                username,
+                password,
+                id: generateUniqueID(),
+            });
         } else {
             setError("Пользователь с таким именем уже существует")
         }

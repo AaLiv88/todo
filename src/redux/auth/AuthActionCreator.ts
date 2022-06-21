@@ -24,13 +24,13 @@ export const AuthActionCreator = {
             dispatch(loginUserError((error as Error).message));
         }
     },
-    registration: (entryData: IEntryData) => async (dispatch: AppDispatch) => {
+    registration: (user: IUser) => async (dispatch: AppDispatch) => {
         try {
             dispatch(loginUser());
-            const response = await UserAPI.registrationUser(entryData);
-            const user = response.data;
+            const response = await UserAPI.registrationUser(user);
+            const newUser = response.data;
             if (response) {
-                dispatch(loginUserSuccess(user));
+                dispatch(loginUserSuccess(newUser));
             }
         } catch (error) {
             dispatch(loginUserError((error as Error).message));
