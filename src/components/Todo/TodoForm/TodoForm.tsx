@@ -1,25 +1,37 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Form, Input } from "antd";
 import cl from "../../LoginForm/LoginForm.module.scss";
 import { rules } from "../../../utils/inputRules";
 import { IActiveTodo } from "../../../modules/Todos/IActiveTodo";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { TodoTypes } from "../../../modules/Todos/todoTypes";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { useAction } from "../../../hooks/useAction";
 
-const TodoForm = () => {
+
+const TodoForm: FC = () => {
+    const { createTodo, getTodos } = useAction();
+    const { isLoading, error } = useAppSelector(state => state.todo)
+    const { user } = useAppSelector(state => state.auth)
     const [todo, setTodo] = useState<IActiveTodo>({
-        title: "",
+        title: "123",
         dateBeforeLoss: 0,
-        createDate: 0,
-        description: "",
-        id: generateUniqueID(),
+        description: "123",
+
+        createDate: Date.now(),
+        id: "",
         type: TodoTypes.ACTIVE,
+        author: "",
     });
 
-    console.log(todo);
-
-    const submit = () => {
-        console.log(123);
+    const submit = async () => {
+        if (user) {
+            createTodo({
+                ...todo,
+                author: user.id,
+                id: generateUniqueID(),
+            });
+        }
     }
 
     return (
@@ -29,17 +41,17 @@ const TodoForm = () => {
             initialValues={{ remember: true }}
             onFinish={() => submit()}
         >
-            {/*{error &&*/}
-            {/*    <div className={cl.errorMessage}>{error}</div>*/}
-            {/*}*/}
+            {error &&
+                <div className={cl.errorMessage}>{error}</div>
+            }
 
             <Form.Item
                 name="title"
                 rules={[rules.required()]}
             >
                 <Input
-                    // value={title}
-                    // onChange={e => setTitle(e.target.value)}
+                    value={todo.title}
+                    onChange={e => setTodo({ ...todo, title: e.target.value })}
                     placeholder="Название"
                 />
             </Form.Item>
@@ -49,8 +61,8 @@ const TodoForm = () => {
                 rules={[rules.required()]}
             >
                 <Input
-                    // value={description}
-                    // onChange={e => setDescription(e.target.value)}
+                    value={todo.description}
+                    onChange={e => setTodo({ ...todo, description: e.target.value })}
                     placeholder="Описание"
                 />
             </Form.Item>
@@ -61,11 +73,11 @@ const TodoForm = () => {
 
             <Form.Item>
                 <Button
-                    // loading={isLoading}
+                    loading={isLoading}
                     type="primary"
                     htmlType="submit"
                 >
-                    Регистрация
+                    Создать
                 </Button>
             </Form.Item>
 

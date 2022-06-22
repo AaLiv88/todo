@@ -7,7 +7,7 @@ import { useAppSelector } from "../hooks/reduxHooks";
 import TodoWrapper from "./Todo/TodoWrapper/TodoWrapper";
 
 const AppRouter: FC = () => {
-    const { isAuth } = useAppSelector(state => state.auth)
+    const { isAuth } = useAppSelector(state => state.auth);
 
     return (
         <Routes>

@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import cl from "./TodoWrapper.module.scss";
 import { PrivateRoutesEnum } from "../../../utils/routes/types";
+import { useAppSelector } from "../../../hooks/reduxHooks";
 
 interface ILinks {
     name: string;
@@ -16,7 +17,7 @@ const links: ILinks[] = [
 
 const TodoWrapper: FC = () => {
     const { pathname } = useLocation();
-    console.log(pathname);
+
 
     return (
         <div className={cl.root}>

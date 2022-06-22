@@ -16,6 +16,7 @@ export const AuthActionCreator = {
             if (user) {
                 localStorage.setItem(LocalStorageKeysEnum.USERNAME, entryData.username);
                 localStorage.setItem(LocalStorageKeysEnum.IS_AUTH, "true");
+                localStorage.setItem(LocalStorageKeysEnum.USER_ID, user.id);
                 dispatch(loginUserSuccess(user));
             } else {
                 dispatch(loginUserError("Не верное имя пользователя или пароль!"));

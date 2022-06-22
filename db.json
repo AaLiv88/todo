@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "username": "AaLivsdsdasdsssd5r3tt",
-      "password": "123",
+      "username": "test",
+      "password": "test",
       "id": "v2-1655765818147-3395933582870"
     },
     {
@@ -14,6 +14,22 @@
       "username": "sdagd",
       "password": "123",
       "id": "v2-1655817680616-6905695124719"
+    },
+    {
+      "username": "sdagds",
+      "password": "123",
+      "id": "v2-1655902523236-9561420146686"
+    }
+  ],
+  "todos": [
+    {
+      "title": "123",
+      "dateBeforeLoss": 0,
+      "description": "123",
+      "createDate": 1655902977893,
+      "id": "v2-1655902979343-1579799184860",
+      "type": "ACTIVE",
+      "author": "v2-1655902523236-9561420146686"
     }
   ]
 }
