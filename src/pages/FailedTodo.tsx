@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
+import { TodoTypes } from "../modules/Todos/todoTypes";
+import TodoList from "../components/Todo/TodoList/TodoList";
 
 const FailedTodo: FC = () => {
     return (
         <div>
-            failed todoo
+            <TodoList type={TodoTypes.FAILED}/>
         </div>
     );
 };
