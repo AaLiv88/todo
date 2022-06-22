@@ -1,7 +1,38 @@
-.root {
-  background-color: #FAF0E6;
+@mixin todo() {
+  border-radius: 5px;
+  padding: 30px;
 }
 
 .activeTodo {
+  @include todo();
   background-color: #FAF0E6;
+}
+
+.failedTodo {
+  @include todo();
+  color: #fff;
+  background-color: #CD5C5C;
+
+  h2 {
+    color: #fff;
+  }
+}
+
+.completeTodo {
+  @include todo();
+  background-color: #90EE90;
+  color: #fff;
+
+  h2 {
+    color: #fff;
+  }
+}
+
+.description {
+  display: block;
+  margin-bottom: 25px;
+}
+
+.date {
+  margin-bottom: 5px;
 }

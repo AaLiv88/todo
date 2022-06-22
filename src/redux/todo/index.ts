@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AnyTodo } from "../../modules/Todos/todoTypes";
+import { ITodo } from "../../modules/Todos/todoTypes";
 
 interface TodoState {
-    todos: AnyTodo[];
+    todos: ITodo[];
     isLoading: boolean;
     error: string;
 }
@@ -22,7 +22,7 @@ export const todoSlice = createSlice({
             state.error = "";
             state.todos = [];
         },
-        fetchTodosSuccess(state: TodoState, action: PayloadAction<AnyTodo[]>) {
+        fetchTodosSuccess(state: TodoState, action: PayloadAction<ITodo[]>) {
             state.isLoading = false;
             state.todos = action.payload;
         },
@@ -33,7 +33,7 @@ export const todoSlice = createSlice({
         setIsLoading(state: TodoState, action: PayloadAction<boolean>) {
             state.isLoading = action.payload;
         },
-        addTodoToState(state: TodoState, action: PayloadAction<AnyTodo>) {
+        addTodoToState(state: TodoState, action: PayloadAction<ITodo>) {
             state.todos.push(action.payload);
         },
         deleteTodoFromState(state: TodoState, action: PayloadAction<string>) {

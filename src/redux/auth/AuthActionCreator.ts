@@ -40,6 +40,6 @@ export const AuthActionCreator = {
     logOut: () => async (dispatch: AppDispatch) => {
         localStorage.removeItem(LocalStorageKeysEnum.USERNAME);
         localStorage.removeItem(LocalStorageKeysEnum.IS_AUTH);
-        dispatch(logOutUser())
+        dispatch(logOutUser());
     }
 }

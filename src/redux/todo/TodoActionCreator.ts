@@ -1,8 +1,7 @@
 import { AppDispatch } from "../index";
 import { addTodoToState, deleteTodoFromState, fetchTodos, fetchTodosError, fetchTodosSuccess } from "./index";
 import { TodoAPI } from "../API/todoAPI";
-import { AnyTodo, anyTypeTodo } from "../../modules/Todos/todoTypes";
-import { ICompletedTodo } from "../../modules/Todos/ICompletedTodo";
+import { ITodo, anyTypeTodo } from "../../modules/Todos/todoTypes";
 
 
 export const TodoActionCreator = {
@@ -15,7 +14,7 @@ export const TodoActionCreator = {
             dispatch(fetchTodosError((error as Error).message))
         }
     },
-    createTodo: (todo: AnyTodo) => async (dispatch: AppDispatch) => {
+    createTodo: (todo: ITodo) => async (dispatch: AppDispatch) => {
         try {
             await TodoAPI.createTodo(todo);
             dispatch(addTodoToState(todo));
@@ -23,7 +22,7 @@ export const TodoActionCreator = {
             dispatch(fetchTodosError((error as Error).message));
         }
     },
-    deleteTodo: (todo: AnyTodo) => async (dispatch: AppDispatch) => {
+    deleteTodo: (todo: ITodo) => async (dispatch: AppDispatch) => {
         try {
             await TodoAPI.deleteTodo(todo.id);
             dispatch(deleteTodoFromState(todo.id));
@@ -31,18 +30,15 @@ export const TodoActionCreator = {
             dispatch(fetchTodosError((error as Error).message));
         }
     },
-    moveTodo: (todo: AnyTodo, where: anyTypeTodo) => async (dispatch: AppDispatch) => {
+    moveTodo: (todo: ITodo, deleteFromStateFlag: boolean) => async (dispatch: AppDispatch) => {
         try {
-            await dispatch(TodoActionCreator.deleteTodo(todo));
-            await TodoAPI.createTodo({
-                type: where,
-                title: todo.title,
-                description: todo.description,
-                id: todo.id,
-                author: todo.author,
-                createDate: todo.createDate,
-                dateOfCompleted: Date.now(),
-            } as ICompletedTodo);
+            await TodoAPI.editTodo(todo);
+            if (deleteFromStateFlag) {
+                dispatch(deleteTodoFromState(todo.id));
+            } else {
+                dispatch(deleteTodoFromState(todo.id));
+                dispatch(addTodoToState(todo));
+            }
         } catch(error) {
             dispatch(fetchTodosError((error as Error).message));
         }

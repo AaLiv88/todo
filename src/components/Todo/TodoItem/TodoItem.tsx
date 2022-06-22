@@ -1,38 +1,40 @@
 import React, { FC } from 'react';
-import { AnyTodo, TodoTypes } from "../../../modules/Todos/todoTypes";
+import { ITodo, TodoTypes } from "../../../modules/Todos/todoTypes";
 import cl from "./TodoItem.module.scss";
 import { Col } from "antd";
-import TodoManaging from "../TodoManaging/TodoManaging";
+import TodoManeging from "../TodoManaging/TodoManeging";
+import { getFormatDateToString } from "../../../utils/getFormateDate";
 
 interface TodoItemProps {
-    todo: AnyTodo;
+    todo: ITodo;
 }
 
-//переделать отображение даты
 const TodoItem: FC<TodoItemProps> = ({ todo }) => {
-    const date = (new Date(todo.createDate)).toISOString().slice(0, 10);
+    const className =
+        todo.type === TodoTypes.ACTIVE ? cl.activeTodo :
+            todo.type === TodoTypes.COMPLETED ? cl.completeTodo :
+                todo.type === TodoTypes.FAILED ? cl.failedTodo : "";
 
     return (
         <Col span={8}>
-            <article className={cl.activeTodo}>
+            <article className={className}>
                 <h2>{todo.title}</h2>
-                <p>{todo.description}</p>
-                <p>Дата создания: {date}</p>
-                <p>
-                    {
-                        todo.type === TodoTypes.ACTIVE &&
-                        <p>выполнить до{new Date(todo.dateBeforeLoss).toISOString().slice(0, 10)}</p>
+                <p className={cl.description}>
+                    {todo.description}
+                </p>
+                <p className={cl.date}>Дата создания: {getFormatDateToString(todo.createDate)}</p>
+                <p className={cl.date}>
+                    {todo.dateBeforeLoss &&
+                        <>выполнить до: {getFormatDateToString(todo.dateBeforeLoss)}</>
                     }
-                    {
-                        todo.type === TodoTypes.COMPLETED &&
-                        <p>выполненно{new Date(todo.dateOfCompleted).toISOString().slice(0, 10)}</p>
+                    {todo.dateOfCompleted &&
+                        <>выполненно: {getFormatDateToString(todo.dateOfCompleted)}</>
                     }
-                    {
-                        todo.type === TodoTypes.FAILED &&
-                        <p>выполненно{new Date(todo.dateOfLoss).toISOString().slice(0, 10)}</p>
+                    {todo.dateOfLoss &&
+                        <>проваленно: {getFormatDateToString(todo.dateOfLoss)}</>
                     }
                 </p>
-                <TodoManaging todo={todo}/>
+                <TodoManeging todo={todo}/>
             </article>
         </Col>
     );

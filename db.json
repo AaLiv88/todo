@@ -19,17 +19,35 @@
       "username": "sdagds",
       "password": "123",
       "id": "v2-1655902523236-9561420146686"
+    },
+    {
+      "username": "aaa",
+      "password": "123",
+      "id": "v2-1655924764846-4385891244865"
     }
   ],
   "todos": [
     {
       "title": "123",
-      "dateBeforeLoss": 0,
       "description": "123",
-      "createDate": 1655902977893,
-      "id": "v2-1655902979343-1579799184860",
-      "type": "ACTIVE",
-      "author": "v2-1655902523236-9561420146686"
+      "createDate": 1655933795310,
+      "id": "v2-1655933800237-5391112112100",
+      "author": "v2-1655924764846-4385891244865",
+      "type": "FAILED",
+      "dateBeforeLoss": null,
+      "dateOfCompleted": null,
+      "dateOfLoss": 1655933812089
+    },
+    {
+      "title": "123",
+      "description": "123",
+      "createDate": 1655933795310,
+      "id": "v2-1655933801988-1660412696658",
+      "author": "v2-1655924764846-4385891244865",
+      "type": "FAILED",
+      "dateBeforeLoss": null,
+      "dateOfCompleted": null,
+      "dateOfLoss": 1655933803019
     }
   ]
 }

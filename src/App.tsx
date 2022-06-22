@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './scss/index.scss';
 import AppRouter from "./components/AppRouter";
 import 'antd/dist/antd.css';
 import { useAction } from "./hooks/useAction";

@@ -1,45 +1,32 @@
-import React, { FC, useState } from 'react';
-import { Button, Form, Input } from "antd";
+import React, { FC } from 'react';
+import { Button, DatePicker, DatePickerProps, Form, Input } from "antd";
 import cl from "../../LoginForm/LoginForm.module.scss";
 import { rules } from "../../../utils/inputRules";
-import { IActiveTodo } from "../../../modules/Todos/IActiveTodo";
-import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { TodoTypes } from "../../../modules/Todos/todoTypes";
+import { ITodo } from "../../../modules/Todos/todoTypes";
 import { useAppSelector } from "../../../hooks/reduxHooks";
-import { useAction } from "../../../hooks/useAction";
 
+interface TodoFormProps {
+    submit: (todo: ITodo) => void;
+    setTodo: (todo: ITodo) => void;
+    todo: ITodo,
+    submitText: string;
+}
 
-const TodoForm: FC = () => {
-    const { createTodo, getTodos } = useAction();
-    const { isLoading, error } = useAppSelector(state => state.todo)
-    const { user } = useAppSelector(state => state.auth)
-    const [todo, setTodo] = useState<IActiveTodo>({
-        title: "123",
-        dateBeforeLoss: 0,
-        description: "123",
+const TodoForm: FC<TodoFormProps> = ({ submit, todo, setTodo, submitText }) => {
+    const { isLoading, error } = useAppSelector(state => state.todo);
 
-        createDate: Date.now(),
-        id: "",
-        type: TodoTypes.ACTIVE,
-        author: "",
-    });
-
-    const submit = async () => {
-        if (user) {
-            createTodo({
-                ...todo,
-                author: user.id,
-                id: generateUniqueID(),
-            });
+    const onChangeDate: DatePickerProps['onChange'] = (date) => {
+        if (date) {
+            setTodo({ ...todo, dateBeforeLoss: new Date(date.format()).getTime() });
         }
-    }
+    };
 
     return (
         <Form
             className={cl.form}
             name="normal_login"
             initialValues={{ remember: true }}
-            onFinish={() => submit()}
+            onFinish={() => submit(todo)}
         >
             {error &&
                 <div className={cl.errorMessage}>{error}</div>
@@ -67,8 +54,11 @@ const TodoForm: FC = () => {
                 />
             </Form.Item>
 
-            <Form.Item>
-                {/*<DatePicker onChange={() => setDate()} />*/}
+            <Form.Item
+                name="date"
+                rules={[rules.required()]}
+            >
+                <DatePicker onChange={onChangeDate}/>
             </Form.Item>
 
             <Form.Item>
@@ -77,7 +67,7 @@ const TodoForm: FC = () => {
                     type="primary"
                     htmlType="submit"
                 >
-                    Создать
+                    {submitText}
                 </Button>
             </Form.Item>
 
